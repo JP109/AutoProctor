@@ -12,7 +12,28 @@ function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const notify = () => toast.dark('Phone detected!');
+  const [missingCounter, setMissingCounter] = useState(1);
+  const [phoneCounter, setPhoneCounter] = useState(1);
+  const [bookCounter, setBookCounter] = useState(1);
+  const [multipleCounter, setMultipleCounter] = useState(1);
+
+  const notify = () => {
+    toast.error('WARNING: Phone detected!');
+    toast.clearWaitingQueue();
+  }
+  const notifyBook = () => {
+    toast.error('WARNING: Book detected!');
+    toast.clearWaitingQueue();
+  }
+  const notifyStudent = () => {
+    setMissingCounter(missingCounter+1);
+    toast.error(<div>WARNING NO. {missingCounter}: Student missing!</div>);
+    toast.clearWaitingQueue();
+  }
+  const notifyMultipleStudents = () => {
+    toast.error('WARNING: Multiple people visible!');
+    toast.clearWaitingQueue();
+  }
 
   // Main function
   const runCoco = async () => {
@@ -25,7 +46,7 @@ function App() {
     }, 10);
   };
 
-  let obj, phone
+  let obj
 
   const detect = async (net) => {
     // Check data is available
@@ -50,22 +71,22 @@ function App() {
       // 4. TODO - Make Detections
       obj = await net.detect(video);
       if(obj && obj.length>0){
-        // phone = obj.filter(o=>{o.class==='cell phone' return );
-        // if(phones>0){
-          // notify();
-        //   console.log(phones)
-        // }
-        phone = obj.find((object)=>{
-          if(object.class==='cell phone')
-          return true;
-        });
-      }
 
-      if(phone){
-        notify();
+        if (obj.filter(e => e.class === 'cell phone').length > 0) {
+          notify();
+        }
+        if (obj.filter(e => e.class === 'book').length > 0) {
+          notifyBook();
+        }
+        if (obj.filter(e => e.class === 'person').length > 1) {
+          notifyMultipleStudents();
+        }
+      }
+      else{
+        notifyStudent();
       }
       
-      // console.log("Model output:",obj);
+      console.log("Model output:",obj);
 
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
@@ -76,18 +97,6 @@ function App() {
   };
 
   useEffect(()=>{runCoco()},[]);
-
-  // const notify = () => toast.dark('Court Added!');
-  // let phones = 0;
-  // useEffect(() => {
-  //   if(obj && obj.length>0){
-  //     phones = obj.filter(o=>o.class==='cell phone');
-  //     if(phones>0){
-  //       notify();
-  //       console.log(phones)
-  //     }
-  //   }
-  // }, [])
 
   return (
     <div className="App">
@@ -102,6 +111,7 @@ function App() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
+          limit={1}
         />
         <Webcam
           ref={webcamRef}
