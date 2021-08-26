@@ -12,26 +12,53 @@ function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const [missingCounter, setMissingCounter] = useState(1);
-  const [phoneCounter, setPhoneCounter] = useState(1);
-  const [bookCounter, setBookCounter] = useState(1);
-  const [multipleCounter, setMultipleCounter] = useState(1);
+  const [missingCounter, setMissingCounter] = useState(0);
+  const [phoneCounter, setPhoneCounter] = useState(0);
+  const [bookCounter, setBookCounter] = useState(0);
+  const [multipleCounter, setMultipleCounter] = useState(0);
+  // const [toastOpen, setToastOpen] = useState(false);
 
   const notify = () => {
-    toast.error('WARNING: Phone detected!');
+    // toast.error('WARNING: Phone detected!');
+    // toast.clearWaitingQueue();
+    toast.error(<div>WARNING
+       {/* NO. {phoneCounter} */}
+       : Phone detected!</div>,{
+      onOpen: ()=>setPhoneCounter(phoneCounter=>phoneCounter+1)
+    });
     toast.clearWaitingQueue();
   }
+
   const notifyBook = () => {
-    toast.error('WARNING: Book detected!');
+    toast.error(<div>WARNING
+       {/* NO. {bookCounter} */}
+       : Book detected!</div>,{
+      onOpen: ()=>setBookCounter(bookCounter=>bookCounter+1)
+    });
     toast.clearWaitingQueue();
   }
+
   const notifyStudent = () => {
-    setMissingCounter(missingCounter+1);
-    toast.error(<div>WARNING NO. {missingCounter}: Student missing!</div>);
+    console.log("MC",missingCounter)
+    toast.error(<div>WARNING 
+      {/* NO. {missingCounter} */}
+      : Student missing!</div>,{
+      onOpen: ()=>{setMissingCounter(missingCounter=>missingCounter+1);
+        // setToastOpen(true);
+      },
+      // onClose: ()=>setToastOpen(false)
+    });
     toast.clearWaitingQueue();
   }
+
   const notifyMultipleStudents = () => {
-    toast.error('WARNING: Multiple people visible!');
+    // toast.error('WARNING: Multiple people visible!');
+    // toast.clearWaitingQueue();
+    toast.error(<div>WARNING 
+      {/* NO. {multipleCounter} */}
+      : Multiple persons detected!</div>,{
+      onOpen: ()=>setMultipleCounter(multipleCounter=>multipleCounter+1)
+    });
     toast.clearWaitingQueue();
   }
 
@@ -70,23 +97,25 @@ function App() {
 
       // 4. TODO - Make Detections
       obj = await net.detect(video);
-      if(obj && obj.length>0){
+      // if(toastOpen===false){
+        if(obj && obj.length>0){
 
-        if (obj.filter(e => e.class === 'cell phone').length > 0) {
-          notify();
+          if (obj.filter(e => e.class === 'cell phone').length > 0) {
+            notify();
+          }
+          if (obj.filter(e => e.class === 'book').length > 0) {
+            notifyBook();
+          }
+          if (obj.filter(e => e.class === 'person').length > 1) {
+            notifyMultipleStudents();
+          }
         }
-        if (obj.filter(e => e.class === 'book').length > 0) {
-          notifyBook();
+        else{
+          notifyStudent();
         }
-        if (obj.filter(e => e.class === 'person').length > 1) {
-          notifyMultipleStudents();
-        }
-      }
-      else{
-        notifyStudent();
-      }
+      // }
       
-      console.log("Model output:",obj);
+      // console.log("Model output:",obj);
 
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
@@ -97,6 +126,20 @@ function App() {
   };
 
   useEffect(()=>{runCoco()},[]);
+  useEffect(() => {
+    // console.log("MC",missingCounter, toastOpen)
+    console.log("Book count",bookCounter)
+    console.log("Missing count",missingCounter)
+    console.log("Phone count",phoneCounter)
+    console.log("Multiple count",multipleCounter)
+    if(bookCounter>2 || missingCounter>2 || phoneCounter>2 || multipleCounter>2){
+      window.alert('Session terminated due to detected malpractise')
+      console.log('Session terminated due to detected malpractise')
+    }
+  }, [phoneCounter, missingCounter, bookCounter, multipleCounter
+    //  toastOpen
+  ])
+
 
   return (
     <div className="App">
