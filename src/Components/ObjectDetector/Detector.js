@@ -7,7 +7,7 @@ import * as tf from "@tensorflow/tfjs";
 import * as cocossd from "@tensorflow-models/coco-ssd"
 import { drawRect } from "../utilities";
 
-const Detector = () => {
+const Detector = (props) => {
 
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
@@ -126,6 +126,7 @@ const Detector = () => {
     };
 
     useEffect(()=>{runCoco()},[]);
+
     useEffect(() => {
         // console.log("MC",missingCounter, toastOpen)
         console.log("Book count",bookCounter)
@@ -133,12 +134,17 @@ const Detector = () => {
         console.log("Phone count",phoneCounter)
         console.log("Multiple count",multipleCounter)
         if(bookCounter>2 || missingCounter>2 || phoneCounter>2 || multipleCounter>2){
-        window.alert('Session terminated due to detected malpractise')
-        console.log('Session terminated due to detected malpractise')
+        // window.alert('Session terminated due to detected malpractise')
+        // console.log('Session terminated due to detected malpractise')
+        props.propsData.push('/terminated')
         }
     }, [phoneCounter, missingCounter, bookCounter, multipleCounter
         //  toastOpen
     ])
+
+    useEffect(() => {
+        console.log("Webcam",webcamRef.current)
+    }, [webcamRef.current])
 
     return (
         <div className="App">
@@ -166,8 +172,12 @@ const Detector = () => {
                     right: 0,
                     textAlign: "center",
                     zindex: 9,
-                    width: 640,
-                    height: 480,
+                    // width: 640,
+                    // height: 480,
+                    //uncomment above and comment below for demo
+                    width: '100vw',
+                    height: '100vh',
+                    visibility: 'hidden',
                 }}
                 />
 
@@ -181,8 +191,11 @@ const Detector = () => {
                     right: 0,
                     textAlign: "center",
                     zindex: 8,
-                    width: 640,
-                    height: 480,
+                    // width: 640,
+                    // height: 480,
+                    //uncomment above and comment below for demo
+                    width: '100vw',
+                    height: '100vh',
                 }}
                 />
             </header>

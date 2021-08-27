@@ -2,7 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import './home.css'
 
-const Home = () => {
+const Home = (props) => {
     return (
         <>
             <main className="main container-fluid px-0">
@@ -14,7 +14,7 @@ const Home = () => {
                             <div className='row m-0 p-0'>
                                 <div className='col-6 m-0 p-0 d-flex justify-content-center'>
                                     <h3>Student?</h3>
-                                    <button>Attempt test</button>
+                                    <button onClick={()=>props.history.push('/test')}>Attempt test</button>
                                 </div>
                                 <div className='col-6 m-0 p-0 d-flex justify-content-center'>
                                     <h3>Teacher?</h3>
