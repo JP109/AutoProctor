@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# AutoProctor: A website for proctoring online exams using Deep Learning.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
