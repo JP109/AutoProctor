@@ -115,7 +115,7 @@ const Detector = (props) => {
             }
         // }
         
-        // console.log("Model output:",obj);
+        console.log("Model output:",obj);
 
         // Draw mesh
         const ctx = canvasRef.current.getContext("2d");
@@ -147,7 +147,7 @@ const Detector = (props) => {
     }, [webcamRef.current])
 
     return (
-        <div className="App">
+        <div className="Detect">
             <header className="App-header">
             <ToastContainer
                 position="top-center"
@@ -156,9 +156,9 @@ const Detector = (props) => {
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}
-                pauseOnFocusLoss
+                pauseOnFocusLoss={false}
                 draggable
-                pauseOnHover
+                pauseOnHover={false}
                 limit={1}
                 />
                 <Webcam
@@ -171,13 +171,14 @@ const Detector = (props) => {
                     left: 0,
                     right: 0,
                     textAlign: "center",
-                    zindex: 9,
+                    // zindex: 9,
                     // width: 640,
                     // height: 480,
                     //uncomment above and comment below for demo
                     width: '100vw',
                     height: '100vh',
-                    visibility: 'hidden',
+                    opacity: 0,
+                    zIndex: -1,
                 }}
                 />
 
