@@ -1,0 +1,10 @@
+.terminated_container {
+  height: 100vh;
+  background-color: #ffc62d;
+  flex-direction: column;
+  /* display: flex; */
+}
+
+.terminated_container > h1 {
+  margin-bottom: 50px;
+}

@@ -1,10 +1,20 @@
 import React from 'react'
+import './terminated.css'
+import Button from '../../Components/Button/Button'
 
 const Terminated = (props) => {
     return (
-        <div className='container-fluid m-auto p-auto'>
+        <div className='container-fluid m-auto p-auto terminated_container d-flex justify-content-center align-items-center'>
             <h1>Your test has been terminated, as we detected malpractise.</h1>
-            <button onClick={()=>props.history.push('/')}>Back to home screen</button>
+            <Button
+                buttonType='sec-btn'
+                handleClick={() => {
+                    // props.history.push('/signup');
+                    props.history.push('/');
+                }}
+                >
+                Back to home screen
+            </Button>
         </div>
     )
 }
