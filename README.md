@@ -11,4 +11,13 @@ This website proctors online google forms based exams, via the students webcam.
 
 All above measures help in proctoring students, without human intervention.
 
-Demo : https://mlproctor.herokuapp.com/
+## Demo 
+https://mlproctor.herokuapp.com/
+
+## Usage notes
+<ol>
+  <li> Clone the repository: git clone https://github.com/JP109/AutoProctor.git
+  <li> Move to cloned folder: cd AutoProctor
+  <li> Install dependencies: npm install
+  <li> Run website: npm start
+</ol>
