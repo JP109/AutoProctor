@@ -12,7 +12,7 @@ This website proctors online google forms based exams, via the students webcam.
 All above measures help in proctoring students, without human intervention.
 
 ## Demo 
-https://mlproctor.herokuapp.com/
+auto-proctor.vercel.app/
 
 ## Usage notes
 <ol>
