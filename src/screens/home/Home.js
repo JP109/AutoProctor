@@ -207,16 +207,6 @@ const Home = (props) => {
                             Home
                         </NavLink>
                         </li>
-                        <li>
-                        <NavLink to='/login' activeClassName='active' exact>
-                            Login
-                        </NavLink>
-                        </li>
-                        <li>
-                        <NavLink to='/signup' activeClassName='active' exact>
-                            Signup
-                        </NavLink>
-                        </li>
                     </ul>
                     {/* <Link className='playstore-badge' to='/playstore'>
                         <img src={googlePlayBadge} />

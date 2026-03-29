@@ -1,5 +1,5 @@
 import './detector.css'
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Webcam from 'react-webcam';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,197 +7,187 @@ import * as tf from "@tensorflow/tfjs";
 import * as cocossd from "@tensorflow-models/coco-ssd"
 import { drawRect } from "../utilities";
 
+let cachedModel = null;
+
+const COOLDOWN_MS = 2000;
+const VIOLATION_THRESHOLD = 3;
+
+const logViolation = (type) => {
+    const violations = JSON.parse(localStorage.getItem('autoproctor_violations') || '[]');
+    violations.push({ type, timestamp: new Date().toISOString() });
+    localStorage.setItem('autoproctor_violations', JSON.stringify(violations));
+};
+
 const Detector = (props) => {
 
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
+    const lastViolationTime = useRef({ phone: 0, book: 0, missing: 0, multiple: 0 });
 
     const [missingCounter, setMissingCounter] = useState(0);
     const [phoneCounter, setPhoneCounter] = useState(0);
     const [bookCounter, setBookCounter] = useState(0);
     const [multipleCounter, setMultipleCounter] = useState(0);
-    // const [toastOpen, setToastOpen] = useState(false);
+    const [cameraError, setCameraError] = useState(false);
 
     const notify = () => {
-        // toast.error('WARNING: Phone detected!');
-        // toast.clearWaitingQueue();
-        toast.error(<div>WARNING
-        {/* NO. {phoneCounter} */}
-        : Phone detected!</div>,{
-        onOpen: ()=>setPhoneCounter(phoneCounter=>phoneCounter+1)
+        toast.error(<div>WARNING: Phone detected!</div>, {
+            onOpen: () => setPhoneCounter(phoneCounter => phoneCounter + 1)
         });
         toast.clearWaitingQueue();
     }
 
     const notifyBook = () => {
-        toast.error(<div>WARNING
-        {/* NO. {bookCounter} */}
-        : Book detected!</div>,{
-        onOpen: ()=>setBookCounter(bookCounter=>bookCounter+1)
+        toast.error(<div>WARNING: Book detected!</div>, {
+            onOpen: () => setBookCounter(bookCounter => bookCounter + 1)
         });
         toast.clearWaitingQueue();
     }
 
     const notifyStudent = () => {
-        console.log("MC",missingCounter)
-        toast.error(<div>WARNING 
-        {/* NO. {missingCounter} */}
-        : Student missing!</div>,{
-        onOpen: ()=>{setMissingCounter(missingCounter=>missingCounter+1);
-            // setToastOpen(true);
-        },
-        // onClose: ()=>setToastOpen(false)
+        toast.error(<div>WARNING: Student missing!</div>, {
+            onOpen: () => setMissingCounter(missingCounter => missingCounter + 1)
         });
         toast.clearWaitingQueue();
     }
 
     const notifyMultipleStudents = () => {
-        // toast.error('WARNING: Multiple people visible!');
-        // toast.clearWaitingQueue();
-        toast.error(<div>WARNING 
-        {/* NO. {multipleCounter} */}
-        : Multiple persons detected!</div>,{
-        onOpen: ()=>setMultipleCounter(multipleCounter=>multipleCounter+1)
+        toast.error(<div>WARNING: Multiple persons detected!</div>, {
+            onOpen: () => setMultipleCounter(multipleCounter => multipleCounter + 1)
         });
         toast.clearWaitingQueue();
     }
 
-    // Main function
-    const runCoco = async () => {
-        // 3. TODO - Load network 
-        const net = await cocossd.load();
-        
-        //  Loop and detect hands
-        setInterval(() => {
-        detect(net);
-        }, 10);
-    };
-
-    let obj
-
     const detect = async (net) => {
-        // Check data is available
         if (
-        typeof webcamRef.current !== "undefined" &&
-        webcamRef.current !== null &&
-        webcamRef.current.video.readyState === 4
+            typeof webcamRef.current !== "undefined" &&
+            webcamRef.current !== null &&
+            webcamRef.current.video.readyState === 4
         ) {
-        // Get Video Properties
-        const video = webcamRef.current.video;
-        const videoWidth = webcamRef.current.video.videoWidth;
-        const videoHeight = webcamRef.current.video.videoHeight;
+            const video = webcamRef.current.video;
+            const videoWidth = webcamRef.current.video.videoWidth;
+            const videoHeight = webcamRef.current.video.videoHeight;
 
-        // Set video width
-        webcamRef.current.video.width = videoWidth;
-        webcamRef.current.video.height = videoHeight;
+            webcamRef.current.video.width = videoWidth;
+            webcamRef.current.video.height = videoHeight;
 
-        // Set canvas height and width
-        canvasRef.current.width = videoWidth;
-        canvasRef.current.height = videoHeight;
+            canvasRef.current.width = videoWidth;
+            canvasRef.current.height = videoHeight;
 
-        // 4. TODO - Make Detections
-        obj = await net.detect(video);
-        // if(toastOpen===false){
-            if(obj && obj.length>0){
+            const obj = await net.detect(video);
+            const now = Date.now();
 
-            if (obj.filter(e => e.class === 'cell phone').length > 0) {
-                notify();
+            if (obj && obj.length > 0) {
+                if (obj.filter(e => e.class === 'cell phone').length > 0) {
+                    if (now - lastViolationTime.current.phone > COOLDOWN_MS) {
+                        lastViolationTime.current.phone = now;
+                        logViolation('phone');
+                        notify();
+                    }
+                }
+                if (obj.filter(e => e.class === 'book').length > 0) {
+                    if (now - lastViolationTime.current.book > COOLDOWN_MS) {
+                        lastViolationTime.current.book = now;
+                        logViolation('book');
+                        notifyBook();
+                    }
+                }
+                if (obj.filter(e => e.class === 'person').length > 1) {
+                    if (now - lastViolationTime.current.multiple > COOLDOWN_MS) {
+                        lastViolationTime.current.multiple = now;
+                        logViolation('multiple');
+                        notifyMultipleStudents();
+                    }
+                }
+            } else {
+                if (now - lastViolationTime.current.missing > COOLDOWN_MS) {
+                    lastViolationTime.current.missing = now;
+                    logViolation('missing');
+                    notifyStudent();
+                }
             }
-            if (obj.filter(e => e.class === 'book').length > 0) {
-                notifyBook();
-            }
-            if (obj.filter(e => e.class === 'person').length > 1) {
-                notifyMultipleStudents();
-            }
-            }
-            else{
-            notifyStudent();
-            }
-        // }
-        
-        console.log("Model output:",obj);
 
-        // Draw mesh
-        const ctx = canvasRef.current.getContext("2d");
-
-        // 5. TODO - Update drawing utility
-        drawRect(obj, ctx)  
+            const ctx = canvasRef.current.getContext("2d");
+            drawRect(obj, ctx);
         }
     };
 
-    useEffect(()=>{runCoco()},[]);
+    useEffect(() => {
+        let intervalId;
+        const startDetection = async () => {
+            if (!cachedModel) {
+                cachedModel = await cocossd.load();
+            }
+            intervalId = setInterval(() => detect(cachedModel), 10);
+        };
+        startDetection();
+        return () => clearInterval(intervalId);
+    }, []);
 
     useEffect(() => {
-        // console.log("MC",missingCounter, toastOpen)
-        console.log("Book count",bookCounter)
-        console.log("Missing count",missingCounter)
-        console.log("Phone count",phoneCounter)
-        console.log("Multiple count",multipleCounter)
-        if(bookCounter>2 || missingCounter>2 || phoneCounter>2 || multipleCounter>2){
-        // window.alert('Session terminated due to detected malpractise')
-        // console.log('Session terminated due to detected malpractise')
-        props.propsData.push('/terminated')
+        if (phoneCounter >= VIOLATION_THRESHOLD || missingCounter >= VIOLATION_THRESHOLD || bookCounter >= VIOLATION_THRESHOLD || multipleCounter >= VIOLATION_THRESHOLD) {
+            props.history.push('/terminated');
         }
-    }, [phoneCounter, missingCounter, bookCounter, multipleCounter
-        //  toastOpen
-    ])
+    }, [phoneCounter, missingCounter, bookCounter, multipleCounter]);
 
-    useEffect(() => {
-        console.log("Webcam",webcamRef.current)
-    }, [webcamRef.current])
+    if (cameraError) {
+        return (
+            <div className="Detect">
+                <header className="App-header">
+                    <div style={{ color: 'white', textAlign: 'center', padding: '20px' }}>
+                        <h3>Camera access denied</h3>
+                        <p>Please allow webcam access to take the proctored exam.</p>
+                    </div>
+                </header>
+            </div>
+        );
+    }
 
     return (
         <div className="Detect">
             <header className="App-header">
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable
-                pauseOnHover={false}
-                limit={1}
+                <ToastContainer
+                    position="top-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}
+                    limit={1}
                 />
                 <Webcam
-                ref={webcamRef}
-                muted={true} 
-                style={{
-                    position: "absolute",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    left: 0,
-                    right: 0,
-                    textAlign: "center",
-                    // zindex: 9,
-                    // width: 640,
-                    // height: 480,
-                    //uncomment above and comment below for demo
-                    width: '100vw',
-                    height: '100vh',
-                    opacity: 0,
-                    zIndex: -1,
-                }}
+                    ref={webcamRef}
+                    muted={true}
+                    onUserMediaError={() => setCameraError(true)}
+                    style={{
+                        position: "absolute",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        left: 0,
+                        right: 0,
+                        textAlign: "center",
+                        width: '100vw',
+                        height: '100vh',
+                        opacity: 0,
+                        zIndex: -1,
+                    }}
                 />
-
                 <canvas
-                ref={canvasRef}
-                style={{
-                    position: "absolute",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    left: 0,
-                    right: 0,
-                    textAlign: "center",
-                    zindex: 8,
-                    // width: 640,
-                    // height: 480,
-                    //uncomment above and comment below for demo
-                    width: '100vw',
-                    height: '100vh',
-                }}
+                    ref={canvasRef}
+                    style={{
+                        position: "absolute",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        left: 0,
+                        right: 0,
+                        textAlign: "center",
+                        zindex: 8,
+                        width: '100vw',
+                        height: '100vh',
+                    }}
                 />
             </header>
         </div>

@@ -2,59 +2,68 @@ import React, { useRef, useEffect } from 'react'
 import Detector from '../../Components/ObjectDetector/Detector'
 import './test.css'
 
+const DEFAULT_FORM_ID = '1FAIpQLSfStnzmAl7QIEKzsk0WM0dnud0wzALMdeh1bLbd--8JLvAc5A';
+
 const Test = (props) => {
 
     const fullscreenRef = useRef(null);
-    // var element = document.getElementById("#container");
 
     function openFullscreen() {
-        if (fullscreenRef.current.requestFullscreen) {
-            fullscreenRef.current.webkitRequestFullscreen();
-        } else if (fullscreenRef.current.webkitRequestFullscreen) { /* Safari */
-            fullscreenRef.current.webkitRequestFullscreen();
-        } else if (fullscreenRef.current.msRequestFullscreen) { /* IE11 */
-            fullscreenRef.current.msRequestFullscreen();
+        const el = fullscreenRef.current;
+        if (el.requestFullscreen) {
+            el.requestFullscreen();
+        } else if (el.webkitRequestFullscreen) {
+            el.webkitRequestFullscreen();
+        } else if (el.msRequestFullscreen) {
+            el.msRequestFullscreen();
         }
     }
 
     useEffect(() => {
         openFullscreen();
-    }, [fullscreenRef.current])
 
-    // useEffect(() => {
-    //     // openFullscreen();
-    //     console.log(fullscreenRef.current.fullscreenElement)
-    //     // if(fullscreenRef.current.fullscreenElement===null){
-    //     //     props.history.push('/terminated');
-    //     // }
-    // }, [fullscreenRef.current])
+        function onFullScreenChange() {
+            const fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+            if (!fullscreenElement) {
+                props.history.push('/terminated');
+            }
+        }
 
-    document.addEventListener("fullscreenchange", onFullScreenChange, false);
-    document.addEventListener("webkitfullscreenchange", onFullScreenChange, false);
-    document.addEventListener("mozfullscreenchange", onFullScreenChange, false);
+        document.addEventListener("fullscreenchange", onFullScreenChange);
+        document.addEventListener("webkitfullscreenchange", onFullScreenChange);
+        document.addEventListener("mozfullscreenchange", onFullScreenChange);
 
-    function onFullScreenChange() {
-    var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
-    
-    if (fullscreenElement ===null){
-        console.log("Exiting fullscreen", fullscreenElement);
-        props.history.push('/terminated');
-    }
-    }
+        return () => {
+            document.removeEventListener("fullscreenchange", onFullScreenChange);
+            document.removeEventListener("webkitfullscreenchange", onFullScreenChange);
+            document.removeEventListener("mozfullscreenchange", onFullScreenChange);
+        };
+    }, []);
+
+    const formId = props.match?.params?.formId || DEFAULT_FORM_ID;
+    const formUrl = `https://docs.google.com/forms/d/e/${formId}/viewform?embedded=true`;
 
     return (
         <>
             <div ref={fullscreenRef} className='container-fluid m-0 p-0 test_container'>
                 <div className='row m-0 p-0'>
                     <div className='col-12 m-0 p-0'>
-                        {/* <button onClick={()=>{openFullscreen()}}>Test button for fullscreen</button> */}
-                        <Detector propsData={props.history}/>
+                        <Detector history={props.history} />
                         <div className='d-flex justify-content-center align-items-center'>
-                            <iframe style={{zIndex:14}} src="https://docs.google.com/forms/d/e/1FAIpQLSfStnzmAl7QIEKzsk0WM0dnud0wzALMdeh1bLbd--8JLvAc5A/viewform?embedded=true" width="640" height="1325" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                            <iframe
+                                style={{ zIndex: 14 }}
+                                src={formUrl}
+                                width="640"
+                                height="1325"
+                                frameBorder="0"
+                                marginHeight="0"
+                                marginWidth="0"
+                            >
+                                Loading…
+                            </iframe>
                         </div>
                     </div>
                 </div>
-                {/* <Detector/> */}
             </div>
         </>
     )
