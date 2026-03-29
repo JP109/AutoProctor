@@ -4,14 +4,16 @@ import iconMenu from "../../assets/images/icon-menu.png";
 import iconClose from "../../assets/images/icon-close.png";
 
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const Navbar = (props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav className="LandingNavbar">
-      Logo
+      <Link to="/" className="BrandLogo">
+        <span className="brand-auto">Auto</span><span className="brand-dash">-</span><span className="brand-proctor">Proctor</span>
+      </Link>
       <ul>
         <li>
           <NavLink to="/" activeClassName="active" exact>

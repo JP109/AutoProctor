@@ -1,31 +1,41 @@
 .btn {
-  padding: 10px 30px;
-  font-size: 16px;
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
   border: none;
-  border-radius: 3px;
-  transition: 500ms ease-out;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
   min-width: 140px;
+  letter-spacing: 0.2px;
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .pri-btn {
   background-color: #ffc62d;
   border: 2px solid #ffc62d;
+  color: #000;
 }
 
 .pri-btn:hover {
-  background-color: #000;
+  background-color: transparent;
   border: 2px solid #ffc62d;
   color: #ffc62d;
+  box-shadow: 0 0 16px rgba(255, 198, 45, 0.25);
 }
 
 .sec-btn {
-  background-color: #fbfbfb;
-  border: 2px solid #fbfbfb;
+  background-color: transparent;
+  border: 2px solid rgba(251, 251, 251, 0.6);
+  color: #fbfbfb;
 }
 
 .sec-btn:hover {
-  background-color: #000;
+  background-color: rgba(251, 251, 251, 0.1);
   border: 2px solid #fbfbfb;
   color: #fbfbfb;
 }
@@ -33,19 +43,20 @@
 .danger-btn {
   background-color: #c22323;
   color: #fbfbfb;
-  padding: 5px 10px;
+  padding: 6px 14px;
   min-width: 0;
   font-size: 14px;
 }
 
 .danger-btn:hover {
-  background-color: #ffc62d;
-  color: #000;
+  background-color: #e02828;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(194, 35, 35, 0.35);
 }
 
 @media screen and (max-width: 800px) {
   .btn {
-    padding: 8px 20px;
+    padding: 10px 22px;
     font-size: 14px;
   }
 }
@@ -53,6 +64,6 @@
 @media screen and (max-width: 320px) {
   .btn {
     min-width: 60px;
-    padding: 4px 20px;
+    padding: 8px 16px;
   }
 }

@@ -7,9 +7,8 @@ const Terminated = (props) => {
         <div className='container-fluid m-auto p-auto terminated_container d-flex justify-content-center align-items-center'>
             <h1>Your test has been terminated, as we detected malpractise.</h1>
             <Button
-                buttonType='sec-btn'
+                buttonType='pri-btn'
                 handleClick={() => {
-                    // props.history.push('/signup');
                     props.history.push('/');
                 }}
                 >

@@ -1,31 +1,22 @@
-/* .home {
-  height: calc(100vh - 50px);
-  background-color: #e6eff3;
-} */
-
-/* .home_intro_2 {
-  margin-bottom: 70px;
-}
-
-.home {
-  background: url("../../assets/images/book_and_pencil.jpg"),
-    linear-gradient(to right, #70e1f5, #ffd194);
-  background-blend-mode: soft-light;
-
-  background-size: cover;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-position: right;
-} */
+/* =========================================
+   Landing Page — Global
+   ========================================= */
 
 .LandingPage {
   background-color: #080e10;
 }
 
+/* =========================================
+   Hero Section
+   ========================================= */
+
 .LandingPage main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: radial-gradient(ellipse at 60% 0%, rgba(255, 198, 45, 0.08) 0%, transparent 60%),
+              linear-gradient(180deg, #0d1b2a 0%, #080e10 100%);
+  padding-bottom: 60px;
 }
 
 .LandingPage main .main-a,
@@ -33,9 +24,17 @@
   padding: 0 5%;
 }
 
+.LandingPage .main-a {
+  padding-top: 80px;
+}
+
 .LandingPage .main-a h1 {
-  font-size: 44px;
+  font-size: 48px;
+  font-weight: 700;
   color: #fbfbfb;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  max-width: 600px;
 }
 
 .LandingPage .main-a h1 span {
@@ -43,110 +42,125 @@
 }
 
 .LandingPage .main-a p {
-  font-size: 20px;
-  margin: 40px 0;
-  width: 40%;
-  color: #fbfbfb;
+  font-size: 18px;
+  margin: 28px 0;
+  width: 44%;
+  color: rgba(251, 251, 251, 0.7);
+  line-height: 1.7;
 }
 
 .LandingPage .main-a p span {
   color: #ffc62d;
 }
 
-.LandingPage .main-a .main-a-btns button:first-child {
-  margin-right: 20px;
+.LandingPage .main-a .main-a-btns {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
+/* Stats bar */
 .LandingPage main .main-b {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  padding-bottom: 60px;
+  gap: 48px;
+  padding-top: 60px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 60px;
+}
+
+.LandingPage .main-b > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .LandingPage .main-b h2 {
   color: #ffc62d;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
 }
 
 .LandingPage .main-b p {
-  color: #fbfbfb;
+  color: rgba(251, 251, 251, 0.55);
+  font-size: 13px;
+  margin: 0;
 }
 
+/* =========================================
+   How It Works (Timeline Section)
+   ========================================= */
+
 .LandingPage .working {
-  max-height: 792px;
   background-color: #ffc62d;
   position: relative;
-  padding: 60px 5% 0 5%;
+  padding: 80px 5% 60px;
   overflow: hidden;
 }
 
 .LandingPage .working .floats:nth-of-type(1) {
   position: absolute;
   bottom: 0;
-  right: 10%;
-  height: 300px;
+  right: 8%;
+  height: 280px;
+  opacity: 0.9;
 }
 
 .LandingPage .working .floats:nth-of-type(2) {
   position: absolute;
-  left: 12%;
-  top: 28%;
-  height: 340px;
+  left: 10%;
+  top: 25%;
+  height: 300px;
+  opacity: 0.9;
 }
 
 .LandingPage .working h1 {
-  font-size: 44px;
+  font-size: 40px;
+  font-weight: 700;
   text-align: center;
+  margin-bottom: 0;
+  letter-spacing: -0.5px;
 }
 
-#timeline .timeline-item:after,
-header:after,
-#timeline .timeline-item:before,
-header:before {
-  content: "";
-  display: block;
-  width: 100%;
-}
+/* Timeline */
 
 #timeline {
   width: 60%;
   margin: 60px auto 0 auto;
   position: relative;
   padding: 0 10px;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  -ms-transition: all 0.4s ease;
   transition: all 0.4s ease;
 }
 
 #timeline:before {
   content: "";
-  width: 3px;
-  height: 70%;
-  background: #000;
+  width: 2px;
+  height: 75%;
+  background: rgba(0, 0, 0, 0.25);
   left: 50%;
   top: 0;
   position: absolute;
 }
 
 #timeline .timeline-item {
-  margin-bottom: 100px;
+  margin-bottom: 80px;
   position: relative;
 }
 
 #timeline .timeline-item .timeline-icon {
   background: #000;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   position: absolute;
   top: 0;
   left: 50%;
   overflow: hidden;
-  margin-left: -23px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
+  margin-left: -24px;
   border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 #timeline .timeline-item .timeline-icon img {
@@ -158,20 +172,18 @@ header:before {
 #timeline .timeline-item .timeline-content {
   width: 45%;
   background: #000;
-  padding: 20px;
-  -webkit-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
-  -ms-box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  border-radius: 5px;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  transition: all 0.3s ease;
+  padding: 20px 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   color: #ffc62d;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+#timeline .timeline-item .timeline-content:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
 }
 
 #timeline .timeline-item .timeline-content:before {
@@ -198,119 +210,137 @@ header:before {
   border-right: 7px solid #000;
 }
 
+/* =========================================
+   Why Auto-Proctor (Features)
+   ========================================= */
+
 .LandingPage .features {
-  height: 800px;
-  max-height: 800px;
   background-color: #080e10;
+  padding: 80px 5% 100px;
   position: relative;
   overflow: hidden;
 }
 
 .LandingPage .features .floats:nth-of-type(1) {
   position: absolute;
-  height: 500px;
-  top: -300px;
-  left: 10px;
+  height: 400px;
+  top: -200px;
+  left: -40px;
+  opacity: 0.15;
+  pointer-events: none;
 }
 
 .LandingPage .features .floats:nth-of-type(2) {
   position: absolute;
-  height: 300px;
-  top: 200px;
-  right: 100px;
+  height: 250px;
+  top: 160px;
+  right: 60px;
+  opacity: 0.1;
   transform: rotate(45deg);
+  pointer-events: none;
 }
 
 .LandingPage .features .floats:nth-of-type(3) {
   position: absolute;
-  height: 600px;
-  bottom: -400px;
-  left: 100px;
+  height: 500px;
+  bottom: -300px;
+  left: 60px;
+  opacity: 0.1;
+  pointer-events: none;
 }
 
-.LandingPage .features h1:nth-of-type(1) {
-  position: absolute;
-  top: 20%;
-  right: -300px;
-
-  text-transform: uppercase;
-  word-spacing: 10px;
-
-  background: none;
-
+.LandingPage .features-title {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 700;
   color: #fbfbfb;
-  font-size: 50px;
-  font-weight: 600;
-  transform-origin: 0 0;
-  z-index: 3;
-  transform: rotate(90deg);
+  margin: 0 0 60px 0;
+  position: relative;
+  z-index: 4;
+  letter-spacing: -0.5px;
 }
 
-.LandingPage .features h1:nth-of-type(2) {
-  position: absolute;
-  top: calc(20% + 2px);
-  right: -298px;
-
-  text-transform: uppercase;
-  word-spacing: 10px;
-
-  background: none;
-
+.LandingPage .features-title span {
   color: #ffc62d;
-  font-size: 50px;
-  font-weight: 600;
-  transform-origin: 0 0;
-  z-index: 2;
-  transform: rotate(90deg);
 }
 
 .LandingPage .features .features-list {
-  color: #fbfbfb;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 14% 20% 0 0;
+  gap: 24px;
+  position: relative;
+  z-index: 4;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .LandingPage .feature {
-  align-self: flex-start;
-  max-height: 200px;
-  width: 40%;
+  width: calc(50% - 24px);
+  max-width: 380px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 198, 45, 0.12);
+  border-radius: 14px;
+  padding: 36px 24px;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  color: #fbfbfb;
+}
+
+.LandingPage .feature:hover {
+  background: rgba(255, 198, 45, 0.06);
+  border-color: rgba(255, 198, 45, 0.35);
+  transform: translateY(-4px);
 }
 
 .LandingPage .feature img {
-  width: 100px;
+  width: 80px;
+  margin-bottom: 16px;
 }
 
 .LandingPage .feature h2 {
   color: #ffc62d;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
+
+.LandingPage .feature p {
+  color: rgba(251, 251, 251, 0.6);
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* =========================================
+   Footer
+   ========================================= */
 
 .LandingPage footer {
   background-color: #ffc62d;
-  margin-top: 80px;
+  margin-top: 0;
 }
 
-/* footer navbar */
-
 .LandingPage footer nav {
-  padding: 20px 5%;
+  padding: 24px 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.LandingPage footer nav .BrandLogo h2 {
-  color: #000;
+.LandingPage footer nav .BrandLogo {
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
 }
 
-.LandingPage footer nav .BrandLogo h2 span {
+.LandingPage footer nav .BrandLogo .brand-auto,
+.LandingPage footer nav .BrandLogo .brand-dash,
+.LandingPage footer nav .BrandLogo .brand-proctor {
   color: #000;
 }
 
@@ -326,7 +356,7 @@ header:before {
 }
 
 .LandingPage footer nav a:hover {
-  color: #fbfbfb;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .LandingPage footer .active {
@@ -341,7 +371,7 @@ header:before {
 }
 
 .LandingPage .footer-content {
-  padding: 20px 5%;
+  padding: 24px 5%;
   display: flex;
 }
 
@@ -351,17 +381,20 @@ header:before {
 }
 
 .LandingPage footer .footer-info {
-  padding-right: 20px;
-  border-right: 4px solid #000;
+  padding-right: 24px;
+  border-right: 3px solid rgba(0, 0, 0, 0.2);
   max-width: 45%;
 }
 
 .LandingPage .footer-info h2 {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .LandingPage .footer-info p {
   text-align: justify;
+  line-height: 1.7;
+  font-size: 14px;
 }
 
 .LandingPage .footer-content p > a {
@@ -369,31 +402,37 @@ header:before {
 }
 
 .LandingPage footer .contact {
-  padding-left: 20px;
+  padding-left: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .LandingPage .contact h2 {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .LandingPage .contact p {
   text-align: justify;
+  line-height: 1.7;
+  font-size: 14px;
 }
 
 .LandingPage .contact .contact-links {
-  margin-top: 10px;
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
 }
 
 .LandingPage .contact .contact-links a {
-  margin-right: 20px;
+  margin-right: 0;
 }
 
 .LandingPage .contact .contact-links a img {
-  height: 30px;
-  width: 30px;
+  height: 28px;
+  width: 28px;
+  transition: opacity 0.2s ease;
 }
 
 .LandingPage .contact .contact-links a img:last-of-type {
@@ -409,14 +448,22 @@ header:before {
 }
 
 .LandingPage footer > p {
-  padding: 20px 5% 40px 20px;
+  padding: 20px 5% 36px;
   text-align: center;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .LandingPage footer > p span {
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  color: #000;
 }
+
+/* =========================================
+   Responsive — 1300px
+   ========================================= */
 
 @media screen and (max-width: 1300px) {
   #timeline {
@@ -424,19 +471,28 @@ header:before {
   }
 }
 
+/* =========================================
+   Responsive — 1050px
+   ========================================= */
+
 @media screen and (max-width: 1050px) {
   #timeline {
     width: 100%;
   }
 }
 
+/* =========================================
+   Responsive — 800px
+   ========================================= */
+
 @media screen and (max-width: 800px) {
   .LandingPage .main-a {
     width: 100%;
+    padding-top: 60px;
   }
 
   .LandingPage .main-a h1 {
-    font-size: 32px;
+    font-size: 34px;
   }
 
   .LandingPage .main-a p {
@@ -445,27 +501,26 @@ header:before {
     width: 90%;
   }
 
-  .LandingPage .main-b > div {
-    width: 50%;
-    margin-top: 30px;
+  .LandingPage main .main-b {
+    gap: 32px;
+    padding-top: 40px;
   }
 
-  /* start of working */
+  /* working */
   .LandingPage .working .floats:nth-of-type(1) {
-    bottom: -6%;
-    height: 200px;
+    bottom: -5%;
+    height: 180px;
   }
 
   .LandingPage .working .floats:nth-of-type(2) {
-    position: absolute;
-    left: 5%;
-    top: 26%;
-    height: 160px;
+    left: 4%;
+    top: 24%;
+    height: 140px;
   }
 
   #timeline {
-    margin: 30px;
-    padding: 0px;
+    margin: 30px auto 0;
+    padding: 0;
     width: 90%;
   }
 
@@ -474,7 +529,7 @@ header:before {
   }
 
   #timeline .timeline-item .timeline-content {
-    width: 90%;
+    width: 88%;
     float: right;
   }
 
@@ -490,42 +545,17 @@ header:before {
     left: 0;
   }
 
-  /* start of feature */
-
+  /* features */
   .LandingPage .features .floats:nth-of-type(2) {
     display: none;
   }
 
-  .LandingPage .features h1:nth-of-type(1) {
-    right: -500px;
-  }
-
-  .LandingPage .features h1:nth-of-type(2) {
-    right: -498px;
-  }
-
-  .LandingPage .features .features-list {
-    margin: 40% 10% 0 0;
-  }
-
   .LandingPage .feature {
-    margin-right: 20px;
+    width: 100%;
+    max-width: 100%;
   }
 
-  .LandingPage .feature img {
-    width: 80px;
-  }
-
-  .LandingPage .feature h2 {
-    font-size: 20px;
-  }
-
-  .LandingPage .feature p {
-    font-size: 14px;
-  }
-
-  /* footer navbar */
-
+  /* footer */
   .LandingPage footer nav > ul {
     display: none;
   }
@@ -540,33 +570,30 @@ header:before {
 
   .LandingPage footer .footer-info {
     padding-right: 0;
-    padding-bottom: 40px;
+    padding-bottom: 32px;
     border-right: none;
-    border-bottom: 4px solid #000;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.2);
     max-width: 100%;
   }
 
   .LandingPage footer .contact {
     padding-left: 0;
-    padding-top: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .LandingPage .contact .contact-links {
-    margin-top: 20px;
+    padding-top: 32px;
   }
 }
 
+/* =========================================
+   Responsive — 320px
+   ========================================= */
+
 @media screen and (max-width: 320px) {
   .LandingPage .main-a h1 {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .LandingPage .main-a p {
-    font-size: 16px;
-    margin: 10px 0;
+    font-size: 15px;
+    margin: 12px 0;
   }
 
   .LandingPage main .main-b {
@@ -574,38 +601,18 @@ header:before {
   }
 
   .LandingPage .main-b h2 {
-    font-size: 20px;
-  }
-
-  .LandingPage .main-b p {
-    font-size: 14px;
-  }
-
-  /* start of feature */
-
-  .LandingPage .features h1:nth-of-type(1) {
-    right: -290px;
-    font-size: 28px;
-  }
-
-  .LandingPage .features h1:nth-of-type(2) {
-    right: -288px;
-    font-size: 28px;
-  }
-
-  .LandingPage .features .features-list {
-    margin: 60% 5% 0 0;
-  }
-
-  .LandingPage .feature {
-    margin-right: 20px;
-  }
-
-  .LandingPage .feature h2 {
     font-size: 18px;
   }
 
+  .LandingPage .features-title {
+    font-size: 28px;
+  }
+
+  .LandingPage .feature h2 {
+    font-size: 16px;
+  }
+
   .LandingPage .feature p {
-    font-size: 14px;
+    font-size: 13px;
   }
 }

@@ -147,8 +147,7 @@ const Home = (props) => {
                     <img className='floats' src={yellowDottedPattern} />
                     <img className='floats' src={yellowDottedPattern} />
                     <img className='floats' src={yellowDottedPattern} />
-                    <h1>Why Auto-Proctor?</h1>
-                    <h1>Why Auto-Proctor?</h1>
+                    <h2 className='features-title'>Why <span>Auto-Proctor?</span></h2>
                     <div className='features-list'>
                     <div className='feature'>
                         <img src={billySearch} />
@@ -190,17 +189,9 @@ const Home = (props) => {
                 <footer>
                     <nav>
 
-                    <div
-                        className='BrandLogo'
-                        onClick={() => {
-                            props.history.push('/');
-                        }}
-                        >
-                        <img src={parkingPointLogo} alt='brand logo' />
-                        <h2>
-                            <span>Auto</span>-Proctor
-                        </h2>
-                    </div>
+                    <Link to='/' className='BrandLogo'>
+                        <span className='brand-auto'>Auto</span><span className='brand-dash'>-</span><span className='brand-proctor'>Proctor</span>
+                    </Link>
                     <ul>
                         <li>
                         <NavLink to='/' activeClassName='active' exact>
